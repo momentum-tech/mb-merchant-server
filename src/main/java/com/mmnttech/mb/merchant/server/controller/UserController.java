@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mmnttech.mb.merchant.server.common.entity.QueryEntity;
 import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
+import com.mmnttech.mb.merchant.server.database.entity.SvcUser;
+import com.mmnttech.mb.merchant.server.service.UserService;
 
 /**
  * @类名 UserController
@@ -29,15 +32,17 @@ public class UserController {
 
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
 	
-	//商户登录
+	@Autowired
+	private UserService userService;
+	
+	//管理人员登录
 	@ResponseBody
 	@RequestMapping(value = "login")
 	public RtnMessage login(HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("queryEntity") QueryEntity queryEntity) {
+			@ModelAttribute("queryEntity") SvcUser svcUser) {
 		RtnMessage rtnMsg = new RtnMessage();
 		try {
-			//TODO
-			
+			rtnMsg = userService.doLogin(svcUser);
 		} catch (Exception e) {
 			logger.error("login 出现异常：", e);
 			rtnMsg.setIsSuccess(false);
@@ -47,26 +52,7 @@ public class UserController {
 		return rtnMsg;
 	}
 	
-
-	//商户注册
-	@ResponseBody
-	@RequestMapping(value = "register")
-	public RtnMessage register(HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("queryEntity") QueryEntity queryEntity) {
-		RtnMessage rtnMsg = new RtnMessage();
-		try {
-			//TODO
-			
-		} catch (Exception e) {
-			logger.error("register 出现异常：", e);
-			rtnMsg.setIsSuccess(false);
-			rtnMsg.setMessage("注册异常：请稍后再试");
-		}
-		
-		return rtnMsg;
-	}
-	
-	//商户密码修改
+	//管理人员密码修改
 	@ResponseBody
 	@RequestMapping(value = "passwd")
 	public RtnMessage passwd(HttpServletRequest request, HttpServletResponse response,

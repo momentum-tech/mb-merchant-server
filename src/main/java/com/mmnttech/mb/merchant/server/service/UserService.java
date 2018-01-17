@@ -1,6 +1,15 @@
 package com.mmnttech.mb.merchant.server.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
+import com.mmnttech.mb.merchant.server.database.entity.SvcUser;
+import com.mmnttech.mb.merchant.server.database.entity.SvcUserExample;
+import com.mmnttech.mb.merchant.server.database.mappers.SvcUserMapper;
+import com.mmnttech.mb.merchant.server.util.StringUtil;
 
 /**
  * @类名 UserService
@@ -15,5 +24,32 @@ import org.springframework.stereotype.Service;
 
 @Service("userService")
 public class UserService {
+	
+	@Autowired
+	private SvcUserMapper svcUserMapper;
 
+	public RtnMessage doLogin(SvcUser svcUser) {
+		RtnMessage rtnMsg = new RtnMessage();
+
+		SvcUserExample example = new SvcUserExample();
+		example.createCriteria().andUserTelEqualTo(svcUser.getUserTel())
+			.andUserPwdEqualTo(StringUtil.MD5(svcUser.getUserPwd()));
+		
+		List<SvcUser> records = svcUserMapper.selectByExample(example);
+		if(records != null && !records.isEmpty()) {
+			if(records.size() == 1) {
+				SvcUser record = records.get(0);
+				rtnMsg.setRtnObj(record);
+			} else {
+				rtnMsg.setIsSuccess(false);
+				rtnMsg.setMessage(RtnMessage.ERROR_LOGIN_1);
+			}
+		} else {
+			rtnMsg.setIsSuccess(false);
+			rtnMsg.setMessage(RtnMessage.ERROR_LOGIN_1);
+		}
+		return rtnMsg;
+	}
+
+	
 }
