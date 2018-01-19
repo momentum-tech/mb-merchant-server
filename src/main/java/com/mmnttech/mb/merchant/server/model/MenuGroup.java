@@ -1,8 +1,12 @@
-package com.mmnttech.mb.merchant.server.database.entity;
+package com.mmnttech.mb.merchant.server.model;
 
 import java.util.Date;
+import javax.persistence.*;
 
+@Table(name = "t_menu_group")
 public class MenuGroup {
+    @Id
+    @Column(name = "rec_id")
     private String recId;
 
     private String name;
@@ -11,54 +15,91 @@ public class MenuGroup {
 
     private String image;
 
+    @Column(name = "create_date")
     private Date createDate;
 
     private Integer sequence;
 
+    /**
+     * @return rec_id
+     */
     public String getRecId() {
         return recId;
     }
 
+    /**
+     * @param recId
+     */
     public void setRecId(String recId) {
-        this.recId = recId == null ? null : recId.trim();
+        this.recId = recId;
     }
 
+    /**
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name
+     */
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
+    /**
+     * @return comments
+     */
     public String getComments() {
         return comments;
     }
 
+    /**
+     * @param comments
+     */
     public void setComments(String comments) {
-        this.comments = comments == null ? null : comments.trim();
+        this.comments = comments;
     }
 
+    /**
+     * @return image
+     */
     public String getImage() {
         return image;
     }
 
+    /**
+     * @param image
+     */
     public void setImage(String image) {
-        this.image = image == null ? null : image.trim();
+        this.image = image;
     }
 
+    /**
+     * @return create_date
+     */
     public Date getCreateDate() {
         return createDate;
     }
 
+    /**
+     * @param createDate
+     */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
+    /**
+     * @return sequence
+     */
     public Integer getSequence() {
         return sequence;
     }
 
+    /**
+     * @param sequence
+     */
     public void setSequence(Integer sequence) {
         this.sequence = sequence;
     }

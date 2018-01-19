@@ -1,13 +1,25 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://121.199.38.132:3306/easepay?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnectForPools=true&amp;autoReconnect=true
+    url: jdbc:mysql://111.231.201.90:3306/ma_db_tourism?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnectForPools=true&amp;autoReconnect=true
     username: ma_db_tourism
     password: 123456
 
+mapper:
+    mappers:
+        - com.mmnttech.mb.merchant.server.util.BaseMapper
+    not-empty: false
+    identity: MYSQL
+
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+
 mybatis:
     mapperLocations: classpath:mapper/*.xml
-    typeAliasesPackage: com.mmnttech.mb.merchant.server.database.mappers
+    typeAliasesPackage: com.mmnttech.mb.merchant.server.model
     
 jedis :
   pool :

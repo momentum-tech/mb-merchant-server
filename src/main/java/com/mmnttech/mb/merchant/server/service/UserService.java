@@ -1,5 +1,8 @@
 package com.mmnttech.mb.merchant.server.service;
 
+import com.mmnttech.mb.merchant.server.mapper.SvcUserMapper;
+import com.mmnttech.mb.merchant.server.model.Role;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,5 +18,13 @@ import org.springframework.stereotype.Service;
 
 @Service("userService")
 public class UserService {
+    @Autowired
+    private SvcUserMapper svcUserMapper;
 
+    @Autowired
+    private RoleService roleService;
+
+    public String queryRoleIdByUserId(String userId) {
+        return svcUserMapper.selectByPrimaryKey(userId).getRoleId();
+    }
 }

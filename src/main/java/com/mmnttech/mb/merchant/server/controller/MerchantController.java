@@ -3,12 +3,13 @@ package com.mmnttech.mb.merchant.server.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mmnttech.mb.merchant.server.common.dto.MerchantAuthDto;
+import com.mmnttech.mb.merchant.server.service.MerchantService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.mmnttech.mb.merchant.server.common.entity.QueryEntity;
 import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
@@ -23,16 +24,19 @@ import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
  * @版本 v1.0
  * 
  */
-@Controller
+@RestController
+@RequestMapping(value = "/v1/merchants")
 public class MerchantController {
 
 	private Logger logger = LoggerFactory.getLogger(MerchantController.class);
-	
 
-	//查询行业分类标准数据
-	@ResponseBody
-	@RequestMapping(value = "merchantAuth")
-	public RtnMessage merchantAuth(HttpServletRequest request, HttpServletResponse response,
+    @Autowired
+    private MerchantService merchantService;
+
+
+    //查询行业分类标准数据
+    @RequestMapping(value = "/merchantAuth")
+    public RtnMessage merchantAuth(HttpServletRequest request, HttpServletResponse response,
 			@ModelAttribute("queryEntity") QueryEntity queryEntity) {
 		RtnMessage rtnMsg = new RtnMessage();
 		
@@ -47,9 +51,8 @@ public class MerchantController {
 	
 
 	//商户诚信状态维护
-	@ResponseBody
-	@RequestMapping(value = "updateMerchantHonestyStatus")
-	public RtnMessage updateMerchantHonestyStatus(HttpServletRequest request, HttpServletResponse response,
+    @RequestMapping(value = "/updateMerchantHonestyStatus")
+    public RtnMessage updateMerchantHonestyStatus(HttpServletRequest request, HttpServletResponse response,
 			@ModelAttribute("queryEntity") QueryEntity queryEntity) {
 		RtnMessage rtnMsg = new RtnMessage();
 		
@@ -61,6 +64,20 @@ public class MerchantController {
 		}
 		return rtnMsg;
 	}
-	
-	
+
+    @RequestMapping(method = RequestMethod.POST)
+    public RtnMessage authMerchant(@RequestBody MerchantAuthDto merchantAuthDto) {
+        RtnMessage rtnMsg = new RtnMessage();
+        try {
+            merchantService.merchantAuth(merchantAuthDto);
+            rtnMsg.setIsSuccess(true);
+        } catch (Exception e) {
+            logger.error("updateMerchantHonestyStatus 出现异常：", e);
+            rtnMsg.setIsSuccess(false);
+            rtnMsg.setMessage("商户诚信状态维护异常: 请稍后再试");
+        }
+        return rtnMsg;
+    }
+
+
 }
