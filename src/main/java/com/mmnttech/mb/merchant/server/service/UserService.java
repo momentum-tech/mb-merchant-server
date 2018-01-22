@@ -28,12 +28,12 @@ public class UserService {
 	@Autowired
 	private SvcUserMapper svcUserMapper;
 
-	public RtnMessage doLogin(SvcUser svcUser) {
+	public RtnMessage doLogin(SvcUser svcUser, List<String> roleIdLst) {
 		RtnMessage rtnMsg = new RtnMessage();
 
 		SvcUserExample example = new SvcUserExample();
 		example.createCriteria().andUserTelEqualTo(svcUser.getUserTel())
-			.andUserPwdEqualTo(StringUtil.MD5(svcUser.getUserPwd()));
+			.andUserPwdEqualTo(StringUtil.MD5(svcUser.getUserPwd())).andRoleIdIn(roleIdLst);
 		
 		List<SvcUser> records = svcUserMapper.selectByExample(example);
 		if(records != null && !records.isEmpty()) {

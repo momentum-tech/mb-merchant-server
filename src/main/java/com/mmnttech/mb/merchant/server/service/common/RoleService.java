@@ -15,6 +15,7 @@ import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
 import com.mmnttech.mb.merchant.server.database.entity.MenuGroup;
 import com.mmnttech.mb.merchant.server.database.entity.MenuGroupExample;
 import com.mmnttech.mb.merchant.server.database.entity.Role;
+import com.mmnttech.mb.merchant.server.database.entity.RoleExample;
 import com.mmnttech.mb.merchant.server.database.entity.RoleMenuGroup;
 import com.mmnttech.mb.merchant.server.database.entity.RoleMenuGroupExample;
 import com.mmnttech.mb.merchant.server.database.mappers.MenuGroupMapper;
@@ -70,6 +71,13 @@ public class RoleService {
 	
 	public Role queryRoleById(String roleId) {
 		return roleMapper.selectByPrimaryKey(roleId);
+	}
+	
+	public List<Role> queryRole(String platForm) {
+		RoleExample example = new RoleExample();
+		example.createCriteria().andPlatformEqualTo(platForm);
+		
+		return roleMapper.selectByExample(example);
 	}
 	
 	public RtnMessage createRole(Role role) {

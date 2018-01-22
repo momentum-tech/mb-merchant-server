@@ -1,5 +1,8 @@
 package com.mmnttech.mb.merchant.server.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,8 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mmnttech.mb.merchant.server.common.entity.QueryEntity;
 import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
+import com.mmnttech.mb.merchant.server.database.entity.Role;
 import com.mmnttech.mb.merchant.server.database.entity.SvcUser;
 import com.mmnttech.mb.merchant.server.service.UserService;
+import com.mmnttech.mb.merchant.server.service.common.RoleService;
 
 /**
  * @类名 UserController
@@ -35,6 +40,9 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private RoleService roleService;
+	
 	//管理人员登录
 	@ResponseBody
 	@RequestMapping(value = "login")
@@ -42,7 +50,13 @@ public class UserController {
 			@ModelAttribute("queryEntity") SvcUser svcUser) {
 		RtnMessage rtnMsg = new RtnMessage();
 		try {
-			rtnMsg = userService.doLogin(svcUser);
+			List<String> roleIdLst = new ArrayList<String>();
+			List<Role> roleLst = roleService.queryRole("主管认证平台");
+			for(Role role : roleLst) {
+				roleIdLst.add(role.getRecId());
+			}
+			
+			rtnMsg = userService.doLogin(svcUser, roleIdLst);
 		} catch (Exception e) {
 			logger.error("login 出现异常：", e);
 			rtnMsg.setIsSuccess(false);
