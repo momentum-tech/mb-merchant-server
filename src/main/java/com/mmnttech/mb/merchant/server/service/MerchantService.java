@@ -43,7 +43,7 @@ public class MerchantService {
         Merchant merchant = merchantMapper.selectByPrimaryKey(merchantId);
         merchant.setComStat(MerchantComStatRefuse);
         merchant.setAuthReason(reason);
-        merchantMapper.updateByPrimaryKey(merchant);
+        merchantMapper.updateByPrimaryKeySelective(merchant);
         return merchant;
     }
 

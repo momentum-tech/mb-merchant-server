@@ -6,17 +6,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.mmnttech.mb.merchant.server.mapper.MenuMapper;
+import com.mmnttech.mb.merchant.server.model.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.mmnttech.mb.merchant.server.common.entity.QueryEntity;
 import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
-import com.mmnttech.mb.merchant.server.database.entity.Menu;
-import com.mmnttech.mb.merchant.server.database.entity.MenuExample;
-import com.mmnttech.mb.merchant.server.database.mappers.MenuMapper;
 import com.mmnttech.mb.merchant.server.util.StringUtil;
 import com.mmnttech.mb.merchant.server.util.Validator;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * @类名 MenuService
@@ -84,10 +84,10 @@ public class MenuService {
 		paramLst.add(menu.getHtml());
 		
 		if(jdbcTemplate.queryForObject(sql.toString(), Integer.class, paramLst.toArray()) == 0) {
-			MenuExample example = new MenuExample();
-			example.createCriteria().andMenuGroupIdEqualTo(menu.getMenuGroupId());
-			
-			int sequence = menuMapper.countByExample(example);
+			Example example = new Example(Menu.class);
+			example.createCriteria().andEqualTo("recId", menu.getMenuGroupId());
+
+			int sequence = menuMapper.selectCountByExample(example);
 			
 			menu.setRecId(StringUtil.getUUID());
 			menu.setSequence(sequence + 1);
@@ -128,8 +128,8 @@ public class MenuService {
 	}
 
 	public List<String> queryMenuIdByRoleId(String menuGroupId) {
-		MenuExample example = new MenuExample();
-		example.createCriteria().andMenuGroupIdEqualTo(menuGroupId);
+		Example example = new Example(Menu.class);
+		example.createCriteria().andEqualTo("recId", menuGroupId);
 		example.setOrderByClause("sequence");
 		
 		List<String> menuIdLst = new ArrayList<String>();
