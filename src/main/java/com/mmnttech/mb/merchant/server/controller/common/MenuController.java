@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mmnttech.mb.merchant.server.common.entity.QueryEntity;
 import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
-import com.mmnttech.mb.merchant.server.database.entity.Menu;
+import com.mmnttech.mb.merchant.server.model.Menu;
 import com.mmnttech.mb.merchant.server.service.common.MenuService;
 
 /**

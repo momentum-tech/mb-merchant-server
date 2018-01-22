@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mmnttech.mb.merchant.server.common.entity.QueryEntity;
 import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
-import com.mmnttech.mb.merchant.server.database.entity.Role;
-import com.mmnttech.mb.merchant.server.database.entity.SvcUser;
+import com.mmnttech.mb.merchant.server.model.Role;
+import com.mmnttech.mb.merchant.server.model.SvcUser;
 import com.mmnttech.mb.merchant.server.service.UserService;
 import com.mmnttech.mb.merchant.server.service.common.RoleService;
 
@@ -51,7 +51,7 @@ public class UserController {
 		RtnMessage rtnMsg = new RtnMessage();
 		try {
 			List<String> roleIdLst = new ArrayList<String>();
-			List<Role> roleLst = roleService.queryRole("主管认证平台");
+			List<Role> roleLst = roleService.queryRoleByPlatform("主管认证平台");
 			for(Role role : roleLst) {
 				roleIdLst.add(role.getRecId());
 			}

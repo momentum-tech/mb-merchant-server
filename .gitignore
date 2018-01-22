@@ -1,5 +1,4 @@
 target/
-/classes
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -15,6 +14,10 @@ target/
 *.iws
 *.iml
 *.ipr
+
+### Eclipse ###
+.classpath
+.project
 
 ### NetBeans ###
 nbproject/private/
@@ -42,4 +45,5 @@ nbdist/
 # system ignore
 .DS_Store
 Thumbs.db
+*.prefs
 /bin/

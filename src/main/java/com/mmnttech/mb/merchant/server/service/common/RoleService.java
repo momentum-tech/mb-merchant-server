@@ -10,17 +10,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tk.mybatis.mapper.entity.Example;
+
 import com.mmnttech.mb.merchant.server.common.entity.QueryEntity;
 import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
-import com.mmnttech.mb.merchant.server.database.entity.MenuGroup;
-import com.mmnttech.mb.merchant.server.database.entity.MenuGroupExample;
-import com.mmnttech.mb.merchant.server.database.entity.Role;
-import com.mmnttech.mb.merchant.server.database.entity.RoleExample;
-import com.mmnttech.mb.merchant.server.database.entity.RoleMenuGroup;
-import com.mmnttech.mb.merchant.server.database.entity.RoleMenuGroupExample;
-import com.mmnttech.mb.merchant.server.database.mappers.MenuGroupMapper;
-import com.mmnttech.mb.merchant.server.database.mappers.RoleMapper;
-import com.mmnttech.mb.merchant.server.database.mappers.RoleMenuGroupMapper;
+import com.mmnttech.mb.merchant.server.mapper.MenuGroupMapper;
+import com.mmnttech.mb.merchant.server.mapper.RoleMapper;
+import com.mmnttech.mb.merchant.server.mapper.RoleMenuGroupMapper;
+import com.mmnttech.mb.merchant.server.model.MenuGroup;
+import com.mmnttech.mb.merchant.server.model.Role;
+import com.mmnttech.mb.merchant.server.model.RoleMenuGroup;
 import com.mmnttech.mb.merchant.server.util.StringUtil;
 import com.mmnttech.mb.merchant.server.util.Validator;
 
@@ -73,9 +72,9 @@ public class RoleService {
 		return roleMapper.selectByPrimaryKey(roleId);
 	}
 	
-	public List<Role> queryRole(String platForm) {
-		RoleExample example = new RoleExample();
-		example.createCriteria().andPlatformEqualTo(platForm);
+	public List<Role> queryRoleByPlatform(String platForm) {
+		Example example = new Example(Role.class);
+		example.createCriteria().andCondition("platform", platForm);
 		
 		return roleMapper.selectByExample(example);
 	}
@@ -146,8 +145,8 @@ public class RoleService {
 	public void txCreatePaymentStatement(List<RoleMenuGroup> roleMenuGroupLst, String roleId) {
 		List<String> menuGroupIdLst = new ArrayList<String>();
 		
-		RoleMenuGroupExample example = new RoleMenuGroupExample();
-		example.createCriteria().andRoleIdEqualTo(roleId);
+		Example example = new Example(Role.class);
+		example.createCriteria().andCondition("roleId", roleId);
 		roleMenuGroupMapper.deleteByExample(example);
 		
 		if(roleMenuGroupLst != null && !roleMenuGroupLst.isEmpty()) {
@@ -160,8 +159,8 @@ public class RoleService {
 				roleMenuGroupMapper.insert(roleMenuGroup);
 			}
 			
-			MenuGroupExample menuGroupExample = new MenuGroupExample();
-			menuGroupExample.createCriteria().andRecIdIn(menuGroupIdLst);
+			Example menuGroupExample = new Example(MenuGroup.class);
+			menuGroupExample.createCriteria().andIn("recId", menuGroupIdLst);
 			menuGroupExample.setOrderByClause("sequence");
 			
 			List<MenuGroup> menuGroupLst = menuGroupMapper.selectByExample(menuGroupExample);
