@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mmnttech.mb.merchant.server.common.entity.QueryEntity;
 import com.mmnttech.mb.merchant.server.common.entity.RoleMenuBatchCreateEntity;
 import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
-import com.mmnttech.mb.merchant.server.database.entity.Role;
-import com.mmnttech.mb.merchant.server.database.entity.RoleMenuGroup;
+import com.mmnttech.mb.merchant.server.model.Role;
+import com.mmnttech.mb.merchant.server.model.RoleMenuGroup;
 import com.mmnttech.mb.merchant.server.service.common.RoleService;
 
 /**
