@@ -10,15 +10,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tk.mybatis.mapper.entity.Example;
+
 import com.mmnttech.mb.merchant.server.common.entity.QueryEntity;
 import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
-import com.mmnttech.mb.merchant.server.database.entity.MenuExample;
-import com.mmnttech.mb.merchant.server.database.entity.MenuGroup;
-import com.mmnttech.mb.merchant.server.database.entity.MenuGroupExample;
-import com.mmnttech.mb.merchant.server.database.entity.RoleMenuGroupExample;
-import com.mmnttech.mb.merchant.server.database.mappers.MenuGroupMapper;
-import com.mmnttech.mb.merchant.server.database.mappers.MenuMapper;
-import com.mmnttech.mb.merchant.server.database.mappers.RoleMenuGroupMapper;
+import com.mmnttech.mb.merchant.server.mapper.MenuGroupMapper;
+import com.mmnttech.mb.merchant.server.mapper.MenuMapper;
+import com.mmnttech.mb.merchant.server.mapper.RoleMenuGroupMapper;
+import com.mmnttech.mb.merchant.server.model.MenuGroup;
+import com.mmnttech.mb.merchant.server.model.RoleMenuGroup;
 import com.mmnttech.mb.merchant.server.util.StringUtil;
 import com.mmnttech.mb.merchant.server.util.Validator;
 
@@ -74,9 +74,9 @@ public class MenuGroupService {
 	public RtnMessage createMenuGroup(MenuGroup menuGroup) {
 		RtnMessage rtnMsg = new RtnMessage();
 		
-		MenuGroupExample example = new MenuGroupExample();
-		example.createCriteria().andNameEqualTo(menuGroup.getName());
-		if(menuGroupMapper.countByExample(example) == 0) {
+		Example example = new Example(MenuGroup.class);
+		example.createCriteria().andCondition("name", menuGroup.getName());
+		if(menuGroupMapper.selectCountByExample(example) == 0) {
 			menuGroup.setRecId(StringUtil.getUUID());
 			menuGroup.setCreateDate(new Date());
 			menuGroup.setSequence(100);
@@ -96,13 +96,13 @@ public class MenuGroupService {
 	public RtnMessage deleteMenuGroup(MenuGroup menuGroup) {
 		RtnMessage rtnMsg = new RtnMessage();
 		
-		MenuExample example = new MenuExample();
-		example.createCriteria().andMenuGroupIdGreaterThan(menuGroup.getRecId());
-		if(menuMapper.countByExample(example) == 0) {
-			RoleMenuGroupExample roleMenuGroupExample = new RoleMenuGroupExample();
-			roleMenuGroupExample.createCriteria().andMenuGroupIdEqualTo(menuGroup.getRecId());
+		Example example = new Example(MenuGroup.class);
+		example.createCriteria().andCondition("menuGroupId", menuGroup.getRecId());
+		if(menuMapper.selectCountByExample(example) == 0) {
+			Example roleMenuGroupExample = new Example(RoleMenuGroup.class);
+			roleMenuGroupExample.createCriteria().andCondition("menuGroupId", menuGroup.getRecId());
 			
-			if(roleMenuGroupMapper.countByExample(roleMenuGroupExample) == 0) {
+			if(roleMenuGroupMapper.selectCountByExample(roleMenuGroupExample) == 0) {
 				menuGroupMapper.deleteByPrimaryKey(menuGroup.getRecId());
 			} else {
 				rtnMsg.setIsSuccess(false);
