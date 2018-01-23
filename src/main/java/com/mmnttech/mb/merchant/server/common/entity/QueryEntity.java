@@ -48,9 +48,19 @@ public class QueryEntity {
 	
 	private String memo;
 	
+	private String status;
+	
 	private int rows = 20;
 	
 	private int page = 1;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public String getStoreId() {
 		return storeId;

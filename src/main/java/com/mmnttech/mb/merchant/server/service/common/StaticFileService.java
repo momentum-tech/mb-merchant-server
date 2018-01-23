@@ -37,10 +37,10 @@ import com.mmnttech.mb.merchant.server.util.StringUtil;
 public class StaticFileService {
 	
 //	private String rootPath = "d:\\Pictures";
+
+	private String rootPath = "/home/ubuntu/staticres/images";
 	
-	private String rootPath = "/home/james/staticres/image";
-	
-	public static final String STATIC_IMAGE_PATH = "http://121.40.171.182/image/";
+	public static final String STATIC_IMAGE_PATH = "http://111.231.201.90/images/";
 	
 	private static final int miniWidth = 600;
 	private static final int miniHeight = 600;

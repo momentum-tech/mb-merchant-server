@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mmnttech.mb.merchant.server.common.dto.MerchantAuthDto;
+import com.mmnttech.mb.merchant.server.common.entity.DictionaryConst;
 import com.mmnttech.mb.merchant.server.mapper.MerchantMapper;
+import com.mmnttech.mb.merchant.server.mapper.TaskMapper;
 import com.mmnttech.mb.merchant.server.model.Merchant;
+import com.mmnttech.mb.merchant.server.model.Task;
 
 /**
  * @类名 MerchantService
@@ -24,7 +27,6 @@ import com.mmnttech.mb.merchant.server.model.Merchant;
  * 
  */
 
-@Transactional
 @Service("merchantService")
 public class MerchantService {
 
@@ -36,6 +38,9 @@ public class MerchantService {
 
     @Autowired
     private MerchantMapper merchantMapper;
+    
+    @Autowired
+    private TaskMapper taskMapper;
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -79,5 +84,16 @@ public class MerchantService {
 		paramLst.add(recId);
 		
 		return jdbcTemplate.queryForMap(sql.toString(), paramLst.toArray());
+	}
+
+	@Transactional
+	public void txUpdateMerchantStatus(Merchant merchant, String taskId) {
+		merchantMapper.updateByPrimaryKeySelective(merchant);
+		
+		Task task = new Task();
+		task.setRecId(taskId);
+		task.setStatus(DictionaryConst.TTask.STATUS_FINISH);
+		
+		taskMapper.updateByPrimaryKeySelective(task);
 	}
 }

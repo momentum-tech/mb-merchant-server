@@ -122,4 +122,24 @@ public class MerchantController {
 	}
 
 
+
+	//获取商户详细信息
+    @RequestMapping(value = "/updateMerchantStatus")
+    public RtnMessage updateMerchantStatus(HttpServletRequest request, HttpServletResponse response,
+    		@ModelAttribute("merchant") Merchant merchant) {
+		RtnMessage rtnMsg = new RtnMessage();
+		try {
+			String taskId = request.getParameter("taskId");
+			if(taskId!= null) {
+				merchantService.txUpdateMerchantStatus(merchant, taskId);
+			}
+		} catch (Exception e) {
+			logger.error("queryMerchantInfo 出现异常：", e);
+			rtnMsg.setIsSuccess(false);
+			rtnMsg.setMessage(RtnMessage.ERROR_QUERY_1);
+		}
+		
+		return rtnMsg;
+	}
+
 }
