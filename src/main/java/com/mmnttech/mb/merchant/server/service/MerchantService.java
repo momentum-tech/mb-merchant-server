@@ -1,11 +1,17 @@
 package com.mmnttech.mb.merchant.server.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.mmnttech.mb.merchant.server.common.dto.MerchantAuthDto;
 import com.mmnttech.mb.merchant.server.mapper.MerchantMapper;
 import com.mmnttech.mb.merchant.server.model.Merchant;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @类名 MerchantService
@@ -30,6 +36,9 @@ public class MerchantService {
 
     @Autowired
     private MerchantMapper merchantMapper;
+    
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private Merchant approveMerchant(String merchantId) {
         Merchant merchant = merchantMapper.selectByPrimaryKey(merchantId);
@@ -54,4 +63,21 @@ public class MerchantService {
             return refuseMerchantCert(merchantAuthDto.getMerchantId(), merchantAuthDto.getReason());
         }
     }
+    
+
+
+	public Map<String, Object> queryMerchantInfo(String recId) {
+		List<Object> paramLst = new ArrayList<Object>();
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT t2.*, CC.category FROM (");
+		sql.append("SELECT t1.*, AC.area FROM (");
+		sql.append("SELECT MCT.*, IDC.industry FROM (SELECT * FROM t_merchant WHERE rec_id = ?) MCT LEFT JOIN (SELECT * FROM t_industry_code)IDC ON MCT.industry_code = IDC.industry_code");
+		sql.append(")t1 LEFT JOIN (SELECT * FROM t_area_code) AC ON t1.area_code = AC.area_code");
+		sql.append(")t2 LEFT JOIN (SELECT * FROM t_category_code) CC ON t2.category_code = CC.category_code");
+		
+		paramLst.add(recId);
+		
+		return jdbcTemplate.queryForMap(sql.toString(), paramLst.toArray());
+	}
 }
