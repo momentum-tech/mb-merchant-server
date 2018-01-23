@@ -36,8 +36,8 @@ public class UserService {
 		RtnMessage rtnMsg = new RtnMessage();
 
 		Example example = new Example(SvcUser.class);
-		example.createCriteria().andCondition("userTel", svcUser.getUserTel())
-		.andCondition("userPwd", StringUtil.MD5(svcUser.getUserPwd()))
+		example.createCriteria().andEqualTo("userTel", svcUser.getUserTel())
+		.andEqualTo("userPwd", StringUtil.MD5(svcUser.getUserPwd()))
 		.andIn("roleId", roleIdLst);
 		
 		List<SvcUser> records = svcUserMapper.selectByExample(example);

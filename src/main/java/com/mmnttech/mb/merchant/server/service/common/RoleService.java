@@ -76,9 +76,9 @@ public class RoleService {
 		return roleMapper.selectByPrimaryKey(roleId);
 	}
 	
-	public List<Role> queryRoleByPlatform(String platForm) {
+	public List<Role> queryRoleByPlatform(String platform) {
 		Example example = new Example(Role.class);
-		example.createCriteria().andCondition("platform", platForm);
+		example.createCriteria().andEqualTo("platform", platform);
 		
 		return roleMapper.selectByExample(example);
 	}
