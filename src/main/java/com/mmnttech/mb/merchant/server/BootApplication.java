@@ -9,7 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
+import tk.mybatis.spring.annotation.MapperScan;
+
 @SpringBootApplication
+@MapperScan(basePackages = "com.mmnttech.mb.merchant.server.mapper")
 public class BootApplication {
 
 	@Autowired
