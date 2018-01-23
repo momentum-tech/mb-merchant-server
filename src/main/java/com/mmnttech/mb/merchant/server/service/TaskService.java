@@ -1,14 +1,16 @@
 package com.mmnttech.mb.merchant.server.service;
 
-import com.github.pagehelper.PageHelper;
-import com.mmnttech.mb.merchant.server.mapper.TaskMapper;
-import com.mmnttech.mb.merchant.server.model.Role;
-import com.mmnttech.mb.merchant.server.model.Task;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.List;
+import com.github.pagehelper.PageHelper;
+import com.mmnttech.mb.merchant.server.mapper.TaskMapper;
+import com.mmnttech.mb.merchant.server.model.Task;
+import com.mmnttech.mb.merchant.server.service.common.RoleService;
 
 /**
  * @author Stelo

@@ -20,6 +20,7 @@ import com.mmnttech.mb.merchant.server.mapper.RoleMenuGroupMapper;
 import com.mmnttech.mb.merchant.server.model.MenuGroup;
 import com.mmnttech.mb.merchant.server.model.Role;
 import com.mmnttech.mb.merchant.server.model.RoleMenuGroup;
+import com.mmnttech.mb.merchant.server.service.UserService;
 import com.mmnttech.mb.merchant.server.util.StringUtil;
 import com.mmnttech.mb.merchant.server.util.Validator;
 
@@ -41,6 +42,9 @@ public class RoleService {
 	
 	@Autowired
 	private RoleMapper roleMapper;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private RoleMenuGroupMapper roleMenuGroupMapper;
@@ -188,6 +192,13 @@ public class RoleService {
 		
 		return menuGroupIdLst;
 	}
-	
+
+    public Role queryRoleByRoleId(String roleId) {
+        return roleMapper.selectByPrimaryKey(roleId);
+    }
+
+    public Role queryRoleByUserId(String userId) {
+        return queryRoleByRoleId(userService.queryRoleIdByUserId(userId));
+    }
 	
 }

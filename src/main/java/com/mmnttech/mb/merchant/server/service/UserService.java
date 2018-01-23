@@ -10,6 +10,7 @@ import tk.mybatis.mapper.entity.Example;
 import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
 import com.mmnttech.mb.merchant.server.mapper.SvcUserMapper;
 import com.mmnttech.mb.merchant.server.model.SvcUser;
+import com.mmnttech.mb.merchant.server.service.common.RoleService;
 import com.mmnttech.mb.merchant.server.util.StringUtil;
 
 /**
