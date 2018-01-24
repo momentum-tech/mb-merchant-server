@@ -16,7 +16,5 @@
     <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="main_id" jdbcType="VARCHAR" property="mainId" />
-    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-    <result column="industry_code" jdbcType="VARCHAR" property="industryCode" />
   </resultMap>
 </mapper>
