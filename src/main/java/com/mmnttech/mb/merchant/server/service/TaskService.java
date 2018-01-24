@@ -87,7 +87,7 @@ public class TaskService {
 		
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT * FROM t_task WHERE status = ? and operator = ?");
-		paramLst.add(DictionaryConst.TTask.STATUS_STANDBY);
+		paramLst.add(DictionaryConst.TTask.STATUS_PROCESSING);
 		paramLst.add(queryEntity.getUserId());
 
 		int offset = (queryEntity.getPage() - 1) * queryEntity.getRows();
@@ -106,6 +106,40 @@ public class TaskService {
 			}
 		}
 		return records;
+	}
+
+	public List<Map<String, Object>> queryApplyTaskLst(QueryEntity queryEntity, String areaCode, String industryCode) {
+		List<Object> paramLst = new ArrayList<Object>();
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT * FROM t_task WHERE status = ? AND area_code = ? AND industry_code = ?");
+		paramLst.add(DictionaryConst.TTask.STATUS_STANDBY);
+		paramLst.add(areaCode);
+		paramLst.add(industryCode);
+
+		int offset = (queryEntity.getPage() - 1) * queryEntity.getRows();
+		
+		sql.append(" ORDER BY create_date desc LIMIT ?, ?");
+		paramLst.add(offset);
+		paramLst.add(queryEntity.getRows());
+		
+		List<Map<String, Object>> records = jdbcTemplate.queryForList(sql.toString(), paramLst.toArray());
+		
+		if(records != null && !records.isEmpty()) {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			
+			for(Map<String, Object> record : records) {
+				record.put("create_date", format.format(record.get("create_date")));
+			}
+		}
+		return records;
+	}
+
+	public void applyTask(Task task) {
+		task.setBeginTime(new Date());
+		task.setStatus(DictionaryConst.TTask.STATUS_PROCESSING);
+		
+		taskMapper.updateByPrimaryKeySelective(task);
 	}
     
     

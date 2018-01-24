@@ -1,6 +1,8 @@
 package com.mmnttech.mb.merchant.server.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import com.mmnttech.mb.merchant.server.common.entity.RtnMessage;
 import com.mmnttech.mb.merchant.server.mapper.SvcUserMapper;
+import com.mmnttech.mb.merchant.server.model.Role;
 import com.mmnttech.mb.merchant.server.model.SvcUser;
 import com.mmnttech.mb.merchant.server.service.common.RoleService;
 import com.mmnttech.mb.merchant.server.util.StringUtil;
@@ -44,7 +47,17 @@ public class UserService {
 		if(records != null && !records.isEmpty()) {
 			if(records.size() == 1) {
 				SvcUser record = records.get(0);
-				rtnMsg.setRtnObj(record);
+				
+				Role role = roleService.queryRoleById(record.getRoleId());
+				Map<String, String> userInfo = new HashMap<String, String>();
+				userInfo.put("userId", record.getUserId());
+				userInfo.put("userTel", record.getUserTel());
+				userInfo.put("userName", record.getUserName());
+				userInfo.put("roleId", record.getRoleId());
+				userInfo.put("areaCode", role.getAreaCode());
+				userInfo.put("industryCode", role.getIndustryCode());
+				
+				rtnMsg.setRtnObj(userInfo);
 			} else {
 				rtnMsg.setIsSuccess(false);
 				rtnMsg.setMessage(RtnMessage.ERROR_LOGIN_1);

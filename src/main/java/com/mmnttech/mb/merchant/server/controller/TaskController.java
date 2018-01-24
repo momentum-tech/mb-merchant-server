@@ -134,6 +134,43 @@ public class TaskController {
     	}
     	return rtnMsg;
     }
+
+    @RequestMapping(value = "/queryApplyTaskLst")
+    public RtnMessage queryApplyTaskLst(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("queryEntity") QueryEntity queryEntity) {
+    	RtnMessage rtnMsg = new RtnMessage();
+    	try {
+    		String areaCode = request.getParameter("areaCode");
+    		String industryCode = request.getParameter("industryCode");
+    		
+    		if(industryCode != null && areaCode != null) {
+    			List<Map<String, Object>> records = taskService.queryApplyTaskLst(queryEntity, areaCode, industryCode);
+        		rtnMsg.setRtnObj(records);
+    		}
+    	} catch (Exception e) {
+    		logger.error("queryApplyTaskLst 出现异常：", e);
+    		rtnMsg.setIsSuccess(false);
+    		rtnMsg.setMessage(RtnMessage.ERROR_QUERY_1);
+    	}
+    	return rtnMsg;
+    }
+    
+    @RequestMapping(value = "/applyTask")
+    public RtnMessage applyTask(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("task") Task task) {
+    	RtnMessage rtnMsg = new RtnMessage();
+    	try {
+    		taskService.applyTask(task);
+    	} catch (Exception e) {
+    		logger.error("applyTask 出现异常：", e);
+    		rtnMsg.setIsSuccess(false);
+    		rtnMsg.setMessage("申领任务失败：请稍后再试");
+    	}
+    	return rtnMsg;
+    }
+    
+    
+    
     
     
 }

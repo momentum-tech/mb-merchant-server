@@ -35,6 +35,12 @@ public class Task {
     @Column(name = "main_id")
     private String mainId;
 
+    @Column(name = "area_code")
+    private String areaCode;
+
+    @Column(name = "industry_code")
+    private String industryCode;
+
     /**
      * @return rec_id
      */
@@ -187,5 +193,33 @@ public class Task {
      */
     public void setMainId(String mainId) {
         this.mainId = mainId;
+    }
+
+    /**
+     * @return area_code
+     */
+    public String getAreaCode() {
+        return areaCode;
+    }
+
+    /**
+     * @param areaCode
+     */
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+    }
+
+    /**
+     * @return industry_code
+     */
+    public String getIndustryCode() {
+        return industryCode;
+    }
+
+    /**
+     * @param industryCode
+     */
+    public void setIndustryCode(String industryCode) {
+        this.industryCode = industryCode;
     }
 }
